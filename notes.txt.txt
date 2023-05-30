@@ -1,0 +1,285 @@
+Why Java frameworks? (or any framework for that matter?) Because we want functionalities like security, login etc, which are provided easily with these Frameworks, otherwise if we code from scratch, it will take lot of time, so as we just want to focus on the business logic, we use frameworks.
+
+
+Spring provides inversion of control: means frameworks takes the control, we don't have to create all the classes and objects by ourselves.
+
+Spring AOP (Aspect Oriented Programming):AOP is often defined as a technique that promotes separation of concerns in a software system.
+
+Ability to create web applications (Spring MVC), Spring data libraries allow to connect to database (instead of using JDBC) 
+
+Live example of dependency injection from the code repository:
+
+1) In order to create an object of Doctor class, I need to know the qualifications too of the doctor, so the Doctor class and Qualifications class are tightly coupled. But I don't want tight coupling between these two classes, so I can keep both of them as separate classes and specify a depdency injection, by doing so Spring framework will insert any dependcies between doctor and qualification.
+
+There are different methods to do dependency injection:
+
+1) Constructor
+2) Setter
+3) XML
+4) Java configuration
+5) Annotations
+
+
+
+
+All the objects will be called beans in terms of spring frameworks, and we can get them from XML or application context, depending upon what the bean container is.
+
+Definition of bean from ChatGPT: In Java programming with the Spring Framework, a "bean" is simply an object that is instantiated, assembled, and managed by the Spring container.
+
+
+
+<bean id="doctor" class="demo.Doctor"></bean> <!-- means when I request for the bean named 'doctor', refer the demo.Doctor class' !-->
+
+ <property name="qualification" value="MBBS"> </property> It sets the property named 'qualification' as value 'MBBS'
+
+Now let's do the dependency injection with the help of annotations.
+
+Q. What does the "@Component" 
+
+Answer from ChatGPT:
+
+The "@Component" annotation is used in Java programming with the Spring Framework to mark a class as a Spring-managed component. This means that the class will be scanned by Spring's component scanner and a bean instance will be created in the Spring application context, which can be used throughout the application. It's a way of telling Spring that this class should be managed and used by the framework as a part of the application.
+
+Another answer: The line <context:component-scan base-package="demo"></context:component-scan> is a configuration element in a Spring Framework XML file, used to automatically register Spring components in a specified package and its sub-packages.
+
+Here's what it means in simple words:
+
+The "context:component-scan" element is used to tell the Spring Framework to scan the "demo" package (and its sub-packages) for Java classes with the Spring component annotations such as @Component, @Service, @Repository, and @Controller.
+
+When the Spring Framework finds a class with one of these annotations, it will automatically register it as a Spring bean in the container.
+
+
+Created Java Bean Configuration file BeanConfig.java
+
+===Scopes of beans===
+
+Beautiful answer from ChatGPT:
+
+In Spring, a bean is an object that Spring manages and is created using the Spring IoC container. The scope of a bean defines the lifecycle and visibility of that bean instance. There are several scopes of beans available in Spring, including:
+
+Singleton: Only one instance of the bean is created, and this instance is shared across the entire application context. This is the default scope.
+
+Prototype: A new instance of the bean is created every time it is requested from the container.
+
+Request: A new instance of the bean is created for every HTTP request.
+
+Session: A new instance of the bean is created for every HTTP session.
+
+Global session: A new instance of the bean is created for every global HTTP session.
+
+The scope of a bean depends on the requirements of your application. If you need to share the same instance of a bean across your application, use the Singleton scope. If you need to create a new instance of a bean every time it is requested, use the Prototype scope. If you need to create a new instance of a bean for every HTTP request or session, use the Request or Session scopes. And if you need to create a new instance of a bean for every global HTTP session, use the Global session scope.
+
+===Bean LifeCycle Methods===
+
+Bean lifecycle methods are methods that are called by the Spring framework at different stages of a bean's lifecycle. These methods allow you to perform custom initialization and destruction logic for your beans.
+
+The Spring container manages the lifecycle of a bean, which includes the following stages: (Need not to cram :P)
+
+Instantiation: The Spring container creates an instance of the bean.
+Populate properties: The Spring container sets the values of any properties that the bean has.
+Initialization: The Spring container calls the bean's initialization method, if it has one.
+Use: The bean can now be used by the application.
+Destruction: The Spring container calls the bean's destruction method, if it has one.
+
+
+Using these bean lifecycle methods in code:
+
+1) "BeanNameAware" interface : BeanNameAware is an interface in Java that a bean can implement to be notified of its own bean name. When a bean is created and registered in the Spring container, the container assigns a unique name to the bean based on the bean definition. This name can be used to identify the bean in other parts of the application.
+
+By implementing the BeanNameAware interface, a bean can receive the name assigned to it by the container during the initialization phase. The bean can then use this name in its own custom initialization logic, or store it for later use.
+
+
+==What are WEB-INF and META-INF used for?===
+
+META-INF and WEB-INF are special directories in a Java web application.
+
+META-INF (short for "metadata information") is a standard directory in a Java project that contains metadata files, such as MANIFEST.MF for JAR files or persistence.xml for Java Persistence API (JPA). The META-INF directory is located at the root of the application's classpath and is used to hold information about the application or specific libraries that the application depends on.
+
+WEB-INF is a directory that is only found in web applications and it contains files that are not meant to be publicly accessible. It is located in the root directory of a web application's WAR (Web Application Archive) file or in the root directory of a web application's directory hierarchy. The contents of the WEB-INF directory are not directly accessible from a web browser, but they can be accessed by servlets, JSPs, and other Java classes that are part of the web application. Some of the important files that can be found in the WEB-INF directory are:
+
+web.xml - This file is used to configure the web application's servlets, filters, and other components.
+classes - This directory contains the compiled Java classes of the web application.
+lib - This directory contains the JAR files that the web application depends on.
+
+In summary, META-INF contains metadata information about a Java project, and WEB-INF contains files that are not meant to be publicly accessible in a web application.
+
+
+Q. What is groupId and artifactId, which we use while specifying Maven dependencies?
+
+In Java, groupId and artifactId are part of the Maven project coordinate system used for identifying and locating dependencies.
+
+groupId identifies the group or organization that the project belongs to, while artifactId identifies the specific project within that group. Together, they form a unique identifier for the project.
+
+For example, suppose you are developing a project for your company called "Acme Corporation" and the project name is "Customer Management". In this case, your groupId could be "com.acme" (assuming your company domain name is "acme.com") and your artifactId could be "customer-management". This would result in a project coordinate of "com.acme:customer-management".
+
+By using these coordinates, Maven can identify the project and its dependencies, and download them automatically from a repository when needed.
+
+Q. What is POM.xml file used for?
+
+A.
+
+pom.xml stands for Project Object Model (POM) XML. It is an XML file that contains information about a project and configuration details used by Maven to build the project. It defines the project's dependencies, plugins, build profiles, and other information related to the project's configuration and build process. The pom.xml file is located in the root directory of the project and is an essential part of any Maven-based project.
+
+
+===Discussion and implementation about Aspect Oriented Programming (AOP) ===
+
+Q1. First of all, let's try to understand what aspect oriented programming is?
+
+A. Let's say, I am building a shopping app, now in this shopping app there would be buisiness logic to add new items to cart, delete items from cart etc. But there would also be the programming logic for database connectivity, loggers,authentication etc, which don't form a part of the business logic.
+
+So, formally (or technically),  aspect oriented programming means cross cutting concerns from our application, and separate it out from the business logic
+
+Implemnentation in code:
+
+See spring-aop-demo project.
+
+ Now I want the logic related to logging, authentication & authorization, sanitising the data too in ShoppingCart.java file.
+
+ So, technically, I need to create different "Aspects" for each of these functionality.
+
+Now we need to define where we want to call the Aspect and which Aspect we want to call. (In technical lanaguage, this is known as pointcuts, but we can avoid these jargons)
+
+So, using the annotation: @Before("execution(* demo.ShoppingCart.checkout())") in LoggingAspect.java file means that before execution of checkout function, the logging Aspect should be called. (* denotes any return type i.e. void, int etc)
+
+We could have other varities too, like before function call, after executuon call, before function return etc.
+
+The annotation: @After("execution(* *.*.checkout())") means that the particular aspect should be called after execution of checkout function from any return type (first *), from any package(second *), from any class (third *)
+
+===Concept of PointCuts in Spring Framework===
+
+In simple language, a pointcut in the Spring Framework is a way to specify the exact location(s) in your code where you want to apply a certain behavior, such as logging or error handling.
+
+Think of it like a filter that matches certain methods or classes in your application based on criteria you specify. This filter is used to identify points in the code where an action needs to be taken, such as before or after a method is executed.
+
+For example, you may want to log the input and output of all methods in a certain package of your application. You can define a pointcut that matches all the methods in that package and then apply a logging behavior to it. This allows you to apply the same behavior to all the matched methods, without having to repeat the code for each method individually.
+
+In summary, a pointcut is a way to specify the exact location(s) in your code where you want to apply a certain behavior, by defining a filter that matches certain methods or classes.
+
+===Another jargon: JoinPoint====
+
+This stackoverflow answer will clarify all the doubts related to JoinPoints and PointCuts:
+
+https://stackoverflow.com/questions/15447397/spring-aop-whats-the-difference-between-joinpoint-and-pointcut
+
+Q.  @Pointcut("within(demo.ShoppingCart.*)")
+    public void authorizationPointCut(){
+
+    } What is the role of the empty function body of authorizationPointCut here?
+
+A. The empty function body of authorizationPointCut() has no functional role in the code. It is just a placeholder to define a named pointcut.
+
+A pointcut is a predicate expression that matches join points in the execution of a program. In this case, the @Pointcut annotation is used to define a named pointcut expression that matches all the methods within the demo.ShoppingCart class and its subclasses.
+
+The empty function body is required to define a named pointcut as a Java method. However, the content of the method body is not important because it is not used by the AspectJ framework at runtime. It is simply an empty method definition used to provide a name for the pointcut expression, which can then be referenced by other advice methods within the aspect.
+
+So, in summary, the empty function body of authorizationPointCut() serves as a placeholder for a named pointcut expression, and it has no functional role in the code other than providing a name for the pointcut expression.
+
+===Intro to SpringBoot===
+
+What is Springboot? Why is it preferred over Spring?
+
+1) Spring requires lots of configurations, like if I am using Hibernate or message queues with Spring, it needs lot of configuration. So, in order that the programmer focus on the business logic rather than configurations, Springboot was introduced, which provides for auto-configuration. Springboot, under the hood, uses Spring.
+
+===Bit about dependency injection===
+
+Using inversion of control i.e. instead of the programmer creating the objects, we pass the control to the framework, and ask it to create the object, we just use the object created by the framework.
+
+=== How to get started with Springboot application?
+
+Goto start.spring.io Specify the details (package name etc) and the dependencies (for the project)
+
+For the sample project, I am using Spring Web and H2 Database as the dependencies.
+
+Once the dependencies are chosen, this website will give the dependecnies alreaqdy generated.
+
+
+We'll be creating REST APIs in the springboot project.
+
+See HelloController.Java file for the first REST API.
+
+Use Spring Boot DevTools for live reloading the Spring App, add its dependency in pom.xml file.
+
+
+See this link: https://drive.google.com/open?id=13Nah7fvSpyiuGXYh1T3zR668haDsgyIJ
+
+We are going to generate a backend, where any frontend library or framework (like React, Angular or Swift) can make a request to our API. The controller layer implements the APIs like GET,POST,PUT etc, the service layer contains the business logic and the repository layer contains the logic for interacting with the database.
+
+===Bit about JPA (Java Persistence API) and H2 database===
+
+JPA (Java Persistence API) is a Java specification that provides a way to interact with databases in an object-oriented way. It allows Java developers to store, retrieve, and manage data in a database using standard Java objects and queries, without having to write SQL code.
+In simple terms, I can say that JPA is an ORM.
+
+H2 is a lightweight, open-source, in-memory relational database management system written in Java. It's designed to be fast and efficient, and it supports SQL and JDBC API. It can be used as an embedded database or as a standalone database server.
+
+Meaning of in-memory RDBMS
+
+An in-memory database system is a type of database management system (DBMS) that stores data in computer memory (RAM) instead of on a hard disk or other persistent storage devices. In other words, the data is kept in volatile memory, which means that it is lost if the power is turned off or the computer crashes.
+
+We'll add the dependencies of JPA and H2 database in the pom.xml file.
+
+Using Entity Annotation in the entity folder, An entity represents a table stored in a database. Every instance of an entity represents a row in the table.
+
+TLDR: Entity is like Models of Javascript project.
+
+
+@Id
+@GeneratedValue(strategy=GenerationType.AUTO) automatically generated a primary key from the table.
+
+By extending JPARepository, I get access to many functions like insertOne, insertAll,findAll and findOne etc which are implemented in the JPARepository class.
+
+
+The RequestBody Annotation is used to automatically convert the JSON body request to a Java object.
+
+@Autowired
+   private DepartmentService departmentService;
+
+Meaning : Yes, autowiring in Spring Framework means that the framework will automatically inject dependencies into the reference variables of a class, so that the objects can be instantiated and initialized correctly.
+
+
+The correct technical name for PostMan API or Thunder API is REST Client, we test our APIs using REST Client.
+
+The @PathVariable annotation is a Spring framework annotation used in web applications that map the values of the URI template variables to method parameters. It allows developers to extract one or more values from a URL path and use them as inputs for a method.
+
+For example, consider the following URI pattern: /users/{userId}/orders/{orderId}. Here, userId and orderId are path variables that can take dynamic values. To extract these values from the URI and pass them to a method, we can use @PathVariable annotation as shown below:
+
+@GetMapping("/users/{userId}/orders/{orderId}")
+public ResponseEntity<Order> getOrder(@PathVariable Long userId, @PathVariable Long orderId) {
+    // ...
+}
+
+if (Objects.nonNull(department.getDepartmentName()) && !"".equalsIgnoreCase(department.getDepartmentName())){
+            depDB.setDepartmentName(department.getDepartmentName());
+        } Why is a check needed for blank string
+
+The check for a blank string is needed to avoid setting an empty or blank department name in the database. If the department name is not null but is an empty string ("") and we don't have this check, the empty string would be set as the department name in the database, which might not be desirable.
+
+By using the !"".equalsIgnoreCase(department.getDepartmentName()) condition, we are checking if the department name is not equal to an empty string (ignoring case sensitivity). If the department name is not empty, then we set the departmentName property of depDB to the value of department.getDepartmentName(). Otherwise, the departmentName property of depDB remains unchanged, which could be the default value set in the constructor or any previously set value.
+
+Therefore, this check ensures that only non-empty department names are stored in the database.
+
+Q. public Department findByDepartmentName(String departmentName); I just wrote this line in the department Repository, and it worked. Why did it work, even though I didn't provide the implementation of the function?
+
+A. It's possible that you are using a framework such as Spring Data JPA, which provides implementations for common repository methods based on naming conventions.
+
+In this case, the method name "findByDepartmentName" follows the convention of "findBy[PropertyName]" which tells Spring Data JPA to generate a query to retrieve the department by its department name property. Spring Data JPA will automatically generate the necessary SQL to execute the query and return the result.
+
+So even though you didn't provide an implementation for the method, it works because Spring Data JPA provides the implementation for you. This is an example of how frameworks can provide convenient shortcuts to make it easier to work with databases in Java.
+
+===Hibernate Validator===
+If I want to perform validations like departmentName,departmentId etc, should always be present in the request body (for example), I can use validators, like spring-boot-starter-validation, which under the hood uses hibernate-validator.
+
+Lombok is a library which helps to remove the boiler plate code from Java. (bnoiler plate code includes the getters and setters etc, which make the code lengthy)
+
+Yes, there is reasoning behind why Lombok is named so. Lombok is named after the Indonesian island of Lombok, which is known for its natural beauty, beaches, and mountains. The creators of Lombok were inspired by the beauty and simplicity of this island, and they wanted to reflect these qualities in their software.
+
+Moreover, the creators of Lombok were originally from Indonesia and wanted to pay homage to their roots by naming their project after a place in their home country. Lombok is also a play on words, as it sounds like the English word "lumber," which refers to wood that is sawn into boards or planks. This is fitting since Lombok is a tool that helps reduce boilerplate code, which can be thought of as unnecessary or excess code that weighs down a project.
+
+Overall, the name Lombok is a nod to the beauty, simplicity, and efficiency that the creators wanted to bring to the software development process.
+
+@Data is a convenient shortcut annotation that bundles the features of @ToString , @EqualsAndHashCode , @Getter / @Setter and @RequiredArgsConstructor together: In other words, @Data generates all the boilerplate that is normally associated with simple POJOs (Plain Old Java Objects) and beans.
+
+==Creating custom user-friendly exceptions for our applications===
+
+For this, we defined the ErrorMessage Entity and RestResponseEntityExceptionHanlder in error folder
+
+Left at 2:59:21
